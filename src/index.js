@@ -1,6 +1,7 @@
 import './css/styles.css';
 import debounce from 'lodash.debounce';
 import { fetchCountries } from './commponents/fetchCountries';
+import Notiflix from 'notiflix';
 
 const DEBOUNCE_DELAY = 300;
 const search = document.querySelector('#search-box');
@@ -9,6 +10,17 @@ const countryList = document.querySelector('.country-list');
 search.addEventListener('input', debounce(onSerchInput, DEBOUNCE_DELAY));
 
 function onSerchInput(evt) {
+  switch (search.value.length) {
+    case 0:
+      return cleanCountryList();
+
+    case 1:
+      cleanCountryList();
+      return Notiflix.Notify.info(
+        'Too many matches found. Please enter a more specific name.'
+      );
+  }
+
   fetchCountries(search.value)
     .then(countries => {
       if (countries.length > 1) {
@@ -17,7 +29,11 @@ function onSerchInput(evt) {
         createMarkupOneCountry(countries[0]);
       }
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      cleanCountryList();
+      console.log(err);
+      Notiflix.Notify.failure('Oops, there is no country with that name');
+    });
 }
 
 function createMarkupCountryList(countries) {
@@ -39,7 +55,6 @@ function createMarkupOneCountry(country) {
     },
     ''
   );
-  console.log(languages);
 
   countryList.innerHTML = `
   <li>
@@ -49,4 +64,8 @@ function createMarkupOneCountry(country) {
     <p><b>Population: </b>${country.population}</p><p>
     <b>Languages: </b>${languages}</p>
   </li>`;
+}
+
+function cleanCountryList() {
+  countryList.innerHTML = '';
 }

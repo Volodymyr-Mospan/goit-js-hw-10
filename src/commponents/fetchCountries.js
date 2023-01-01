@@ -1,6 +1,4 @@
 export function fetchCountries(name) {
-  console.log(name);
-
   return fetch(`https://restcountries.com/v3.1/name/${name}`).then(resp => {
     if (!resp.ok) {
       throw new Error(resp.statusText);
