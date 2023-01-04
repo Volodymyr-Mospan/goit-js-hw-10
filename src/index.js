@@ -40,7 +40,7 @@ function createMarkupCountryList(countries) {
   countryList.innerHTML = countries
     .map(
       country =>
-        `<li><img src="${country.flags.svg}" alt="flag of country" width="30"><p>${country.name.official}</p></li>`
+        `<li class="country-name"><img src="${country.flags.svg}" alt="flag of country" width="30"><p>${country.name.official}</p></li>`
     )
     .join('');
 }
@@ -58,8 +58,8 @@ function createMarkupOneCountry(country) {
 
   countryList.innerHTML = `
   <li>
-    <img src="${country.flags.svg}" alt="flag of country" width="60">
-    <h2>${country.name.official}</h2>
+    <div class="country-name"><img src="${country.flags.svg}" alt="flag of country" width="60">
+    <h2>${country.name.official}</h2></div>
     <p><b>Capital: </b>${country.capital}</p>
     <p><b>Population: </b>${country.population}</p><p>
     <b>Languages: </b>${languages}</p>
